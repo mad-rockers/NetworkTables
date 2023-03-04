@@ -9,9 +9,16 @@
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc/XboxController.h>
+#include <networktables/DoubleTopic.h>
+#include <networktables/NetworkTable.h>
+#include <networktables/NetworkTableInstance.h>
 
 class Robot : public frc::TimedRobot {
  public:
+
+  nt::DoublePublisher xPub;
+  nt::DoublePublisher yPub;
+
   void RobotInit() override;
   void RobotPeriodic() override;
   void AutonomousInit() override;

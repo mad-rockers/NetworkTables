@@ -11,6 +11,21 @@ void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  // Get the default instance of NetworkTables that was created automatically
+  // when the robot program starts
+  auto inst = nt::NetworkTableInstance::GetDefault();
+
+  // Get the table within that instance that contains the data. There can
+  // be as many tables as you like and exist to make it easier to organize
+  // your data. In this case, it's a table called datatable.
+  auto table = inst.GetTable("datatable");
+
+  // Start publishing topics within that table that correspond to the X and Y values
+  // for some operation in your program.
+  // The topic names are actually "/datatable/x" and "/datatable/y".
+  xPub = table->GetDoubleTopic("x").Publish();
+  yPub = table->GetDoubleTopic("y").Publish();
 }
 
 /**
@@ -54,6 +69,9 @@ void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {}
 
+double x = 0;
+double y = 0;
+
 void Robot::TeleopPeriodic() {
   
   leftbump = xbox.GetLeftBumper();
@@ -73,6 +91,12 @@ void Robot::TeleopPeriodic() {
   
   rightTrigger = xbox.GetRightTriggerAxis();
   leftTrigger = xbox.GetLeftTriggerAxis();
+
+    // Publish values that are constantly increasing.
+    xPub.Set(x);
+    yPub.Set(y);
+    x += 0.05;
+    y += 0.05;
 }
 
 void Robot::DisabledInit() {}
