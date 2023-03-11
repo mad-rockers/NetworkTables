@@ -6,6 +6,9 @@
 #include <frc/XboxController.h>
 #include <fmt/core.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include "networktables/NetworkTable.h"
+#include "networktables/NetworkTableInstance.h"
+
 
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
@@ -49,6 +52,7 @@ void Robot::RobotPeriodic() {
   frc::SmartDashboard::PutNumber("right_y : ", right_y);
   frc::SmartDashboard::PutNumber("leftTrigger : ", leftTrigger);
   frc::SmartDashboard::PutNumber("rightTrigger : ", rightTrigger);
+  frc::SmartDashboard::PutNumber("AprilTag_ID : ", tid);
   
 }
 
@@ -74,6 +78,7 @@ double y = 0;
 
 void Robot::TeleopPeriodic() {
   
+  tid = nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tid",0.0);
   leftbump = xbox.GetLeftBumper();
   rightbump = xbox.GetRightBumper();
   
@@ -97,6 +102,7 @@ void Robot::TeleopPeriodic() {
     yPub.Set(y);
     x += 0.05;
     y += 0.05;
+
 }
 
 void Robot::DisabledInit() {}

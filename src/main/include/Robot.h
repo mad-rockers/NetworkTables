@@ -57,4 +57,6 @@ class Robot : public frc::TimedRobot {
 
   double rightTrigger = 0.0;
   double leftTrigger = 0.0;
+
+  double tid = 0.0;
 };
